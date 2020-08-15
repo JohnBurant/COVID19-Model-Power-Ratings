@@ -19,8 +19,8 @@ d_policy = {'include_baselines': True,
            }
 
 # Where to find and put things
-working_dir = '/Users/tabouli/Dropbox/Personal/Corona/power_ratings/COVID19-Model-Power-Ratings/' # Local path of this repo
-yyg_repo_dir = '/Users/tabouli/Dropbox/Personal/Corona/youyanggu/covid19-forecast-hub-evaluation/' # path to clone of https://github.com/youyanggu/covid19-forecast-hub-evaluation
+working_dir = 'EDIT_ME_PLEASE' # Local path of this repo
+yyg_repo_dir = 'EDIT_ME_PLEASE' # path to clone of https://github.com/youyanggu/covid19-forecast-hub-evaluation
 eval_dir = yyg_repo_dir + 'evaluations/'
 output_dir = working_dir + 'results/'
 
