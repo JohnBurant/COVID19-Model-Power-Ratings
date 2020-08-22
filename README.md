@@ -2,7 +2,7 @@
 
 COVID19 Model Power Ratings provide a framework for comparing the accuracy of the models submitted to @reichlab's COVID19 Forecast Hub (https://covid19forecasthub.org/) as a ***single number***.
 
-At present, the power ratings are built from the error measures calculated by @youyanggu's Evaluation of COVID-19 Models (https://github.com/youyanggu/covid19-forecast-hub-evaluation/) package. That package provides a variety of error measures, but does not consolidate them into a single number. The measures in @youyanggu's package measure only the accuracy of forecasted deaths and therefore the power ratings here are also limited to forecasted deaths. A power ratings calculations does not, by itself, require the calculation of any error measures. In fact the code presented here simply reads the error measures contained in @youyanggu's covid19-forecast-hub-evaluation output files and uses them as input to further calculations.
+At present, the power ratings are built from the error measures calculated by @youyanggu's Evaluation of COVID-19 Models (https://github.com/youyanggu/covid19-forecast-hub-evaluation/) package. That package provides a variety of error measures, but does not consolidate them into a single number. The measures in @youyanggu's package measure only the accuracy of forecasted deaths and therefore the power ratings here are also limited to forecasted deaths. A power ratings calculations does not, by itself, require the calculation of any new error measures. In fact the code presented here simply reads the error measures contained in @youyanggu's covid19-forecast-hub-evaluation output files and uses them as input to further calculations.
 
 The power rating framework provides the flexibility to compare models over any desired time range and time horizon, to include or exclude any particular models, and to use  any desired set of error measures. This flexibility enables both high-level summary ratings and more detailed analyses of the accuracy of the models.
 
@@ -58,9 +58,9 @@ The inclusion of the absolute error at the national level provides credit for mo
 
 The power ratings are inherently dependent on the set of models included in the ratings. Several options are permitted by the current code:
 
-* Whether or not to include baseline models (linear projections). The default is to include these.
+* **UPDATED** Whether or not to include baseline models (linear projections). The default is to include **one baseline model**.
 * Whether or not to include the COVID19 Forecast Hub ensemble model, which itself is an aggregation of the other models. The default is to include the ensemble.
-* Whether or not to include models for which the full set of error measures are not available. Most models provide projections at the state level, which are then aggregated to the national level. However, some models only provide national forecasts, and thus are missing 3 of the 4 error measures. Models that provide only national forecasts will themselves receive low overall power scores (they are assigned a 0 for missing measures). However, it is meaningful include them in order to assess the national-level aggregation of the multi-state models against both state-level and national-only models. The default is to include these models.
+* **UPDATED** Whether or not to include models for which the full set of error measures are not available. Most models provide projections at the state level, which are then aggregated to the national level. However, some models only provide national forecasts, and thus are missing 3 of the 4 error measures. Models that provide only national forecasts receive low overall power scores if compared with state-level models (as they are assigned a 0 for missing measures), so it is reasonable to analyze the national-only models separately and not to include them on lists of state-level model power ratings. However, it is still worthwhile to compare the aggregation of state-level models against the full set of state-level and national-only models. **This is now the default setting.**
 * Whether or not to include models that do not provide forecasts for all weeks in the desired time horizon. To compare models with each other consistently, it's reasonable to require models to have projections available for the identical number of weeks. Therefore the default is not to include models that do not provide projections for all weeks in the desired time horizon.
 * Whether or not to generate results for recent weeks. The power ratings are assigned on the basis of performance over a time horizon of specified number of weeks. This policy choice determines whether (preliminary) power ratings are generated for model forecasts prior to reaching the end of that time horizon. The default is not to generate these preliminary ratings.
 
@@ -76,6 +76,8 @@ The feature measures of this code are:
 
 **Weekly power rating**: Provides a weekly measure for each model, for each week in which a model forecast was provided, comparing it against all other models for the chosen set of error measures and time horizon.
 
+**UPDATED** **Rolling average power rating**: Provides a measure of which models have been accurate at specific points in the past and which are the most accurate *in the current moment*. This calculates a rolling average of the weekly power ratings over a window (default: four week window). The four-week averaging reduces the flucuation realtive to the purely weekly power rating, and therefore allows more meaningful assessment over periods of a month, as well as demonstrating more clearly overall trend lines.
+
 ### Code ###
 
 The power rating scheme is implemented in Python. The code can be found in power_ratings_v0.2.py, in the root directory of this repo. The code requires a local copy of the /evaluation subdirectory of https://github.com/youyanggu/covid19-forecast-hub-evaluation.
@@ -90,10 +92,14 @@ The python code generates a multi-tab Excel file, which can be found in the /res
 
 *Model_weekly:* The weekly power ratings as described above.
 
+**UPDATED** *Model_rolling_N_wks:* Provides the rolling average power rating over N weeks (N listed in info tab) as described above.
+
 *Model_measures:* Provides a comparison of each model on each error measure over its whole lifetime. This shows which models do well, or not well, on each measure. Some are relatively consistent across all measures, others vary widely.
 
 *Model_num_weeks:* Provides a comparison of each model by the number of weeks out from the week of submission. This shows how well models perform over the course of the time horizon. Some models improve over the course of the time horizon, whereas others get worse.
 
 *Model_week_pairs:* Provide a power rating for a model for each week throughout the time horizon, separately for each week in which a forecast was submitted.
+
+**UPDATED** *Model_natl_err_only_wks:* Power ratings of all models on the basis of the error in national death projections only, provided separately for each week a forecast was submitted.
 
 *Raw_power_ratings:* The power ratings for the 4-tuple of model/start_week/end_week/measure described above, which form the basis for all power rating aggregations.
