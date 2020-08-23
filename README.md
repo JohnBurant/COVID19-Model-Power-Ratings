@@ -52,7 +52,7 @@ The default set of measures taken from @youyanggu's Evaluation of COVID-19 Model
 
 By virtue of including three state-level measures, the default power rating emphasizes state-level accuracy over national-level accuracy. Because of the disparate levels of impact of COVID19 across the country and the value of having localized forecasts, this is a reasonable choice. The highly uneven population distribution among the states, however, means that any average of state-level measures will be skewed towards performance in the more populous states.
 The inclusion of the mean ranking (i.e., the averaged ranking of the models in each of the states) rewards consistency across states and offsets this issue somewhat.
-The inclusion of the absolute error at the national level provides credit for models that may not be highly accurate for all states, but for which cancellation of errors leads to accuracy at the national level.
+The inclusion of the absolute error at the national level provides a means of distinguishing forecasts with systematic overestimates or underestimates (which are not detected with absolute or square error measures) from those with errors that are centered around the true values.
 
 *Model Inclusion/Exclusion*
 
