@@ -1,10 +1,10 @@
-# power_ratings_v0.2.py
-# Last updated: 22 August 2020
+# power_ratings_v0.3.py
+# Last updated: 29 August 2020
 # https://github.com/JohnBurant/COVID19-Model-Power-Ratings
 
 # Timeframe choices
 first_week = 17
-last_week = 33
+last_week = 35
 nweeks = 3 # Input as 0-indexed, i.e., how many we actually want - 1
 Nroll = 4 # Number of weeks to use for rolling average overall power rating (N->inf = lifetime, N->1 identical to weekly rating)
 
@@ -14,11 +14,12 @@ d_policy = {'include_baselines': True,
             'include_ensemble' : True,
             'include_models_without_full_measure_set': False,
             'include_models_without_all_weeks': False,
-            'generate_partial_results_for_recent_weeks': False
+            'generate_partial_results_for_recent_weeks': False,
+            'num_forecasts_for_lifetime_list_eligibility': 4
            }
 
-working_dir = 'EDIT_ME_PLEASE' # Local path of this repo
-yyg_repo_dir = 'EDIT_ME_PLEASE' # path to clone of https://github.com/youyanggu/covid19-forecast-hub-evaluation
+working_dir = 'EDIT_ME' # Local path of this repo
+yyg_repo_dir = 'EDIT_ME' # path to clone of https://github.com/youyanggu/covid19-forecast-hub-evaluation
 eval_dir = yyg_repo_dir + 'evaluations/'
 output_dir = working_dir + 'results/'
 
@@ -244,7 +245,10 @@ outstring = 'First week: '+str(first_week)+' (i.e., week starting '+str(d_wk_to_
 say(outstring,l_outs)
 outstring = '  Covering the period of first week plus an additional '+str(nweeks)+' weeks (i.e., a total of '+str(nweeks+1)+' weeks)'
 say(outstring,l_outs)
-df_power_model = df_power_model_start_wk.loc[weeks_included,:].mean(axis=0).sort_values(ascending=False)
+# Add count of forecasts as column (so new arrivals are properly seen as such, compared with long-standing models)
+#df_power_model = df_power_model_start_wk.loc[weeks_included,:].mean(axis=0).sort_values(ascending=False)
+df_power_model = df_power_model_start_wk.loc[weeks_included,:].stack().groupby('Model').agg(['count', 'mean']).rename(columns={'count': 'num_forecasts_in_lifetime', 'mean': 'mean_power_rating'}).sort_values('mean_power_rating',ascending=False)
+df_power_model = df_power_model[df_power_model['num_forecasts_in_lifetime'] >= d_policy['num_forecasts_for_lifetime_list_eligibility']]
 df_power_model.name = 'Power_Rating'
 
 # Also look at national-only models
