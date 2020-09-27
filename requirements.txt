@@ -1,0 +1,2 @@
+altair==4.1.0
+epiweeks==2.1.2
