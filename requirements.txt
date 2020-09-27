@@ -1,2 +1,17 @@
 altair==4.1.0
+attrs==20.2.0
+certifi==2020.6.20
+entrypoints==0.3
 epiweeks==2.1.2
+importlib-metadata==2.0.0
+Jinja2==2.11.2
+jsonschema==3.2.0
+MarkupSafe==1.1.1
+numpy==1.19.2
+pandas==1.1.2
+pyrsistent==0.17.3
+python-dateutil==2.8.1
+pytz==2020.1
+six==1.15.0
+toolz==0.11.1
+zipp==3.2.0
