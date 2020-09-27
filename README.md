@@ -80,7 +80,22 @@ The feature measures of this code are:
 
 ### Code ###
 
-The power rating scheme is implemented in Python. The code can be found in **(UPDATED) power_ratings_v0.3.py**, in the root directory of this repo. The code requires a local copy of the /evaluation subdirectory of https://github.com/youyanggu/covid19-forecast-hub-evaluation.
+The power rating scheme is implemented in Python. The code can be found in **(UPDATED) power_ratings_v0.3.py**, in the root directory of this repo. The code requires a local copy of the /evaluations subdirectory of https://github.com/youyanggu/covid19-forecast-hub-evaluation.
+
+#### Running ####
+
+Update power_ratings_v0.3.py to point to the correct folders:
+
+```python
+working_dir = 'EDIT_ME' # Local path of this repo
+yyg_repo_dir = 'EDIT_ME' # path to clone of https://github.com/youyanggu/covid19-forecast-hub-evaluation
+```
+
+In your terminal, run the following to install required packages:
+
+```bash
+pip install -r requirements.txt
+```
 
 ### Results ###
 
